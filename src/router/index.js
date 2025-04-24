@@ -7,6 +7,14 @@ const router = createRouter({
       path: '/',
       component: ()=>import("@/views/HomeView.vue"),
     },
+    {
+      path: '/workspace',
+      component: ()=>import("@/views/WorkSpaceView.vue"),
+    },
+    {
+      path: '/settings',
+      component: ()=>import("@/views/SettingsView.vue"),
+    },
     // {
     //   path: '/about',
     //   name: 'about',

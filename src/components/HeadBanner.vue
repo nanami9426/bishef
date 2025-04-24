@@ -49,6 +49,8 @@
     font-family: 'SimSun', '宋体', serif;
     font-size: 1.25rem;
     font-weight: bold;
+    cursor: default;
+    color: #080f18;
   }
   
   .nav-links {
