@@ -77,5 +77,9 @@
     background-color: #3170af;
     color: white;
   }
+  .active:hover {
+    background-color: #3d87d6;
+    color: white;
+  }
   </style>
   
