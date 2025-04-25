@@ -35,6 +35,11 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast();
+
+
 const isStreaming = ref(false)
 
 const videoSrc = ref('http://localhost:8000/video_feed')
@@ -66,7 +71,7 @@ async function checkStreamStatus() {
 
 async function startStream() {
   if (isStreaming.value) {
-    alert('推流已经在进行中')
+    toast('推流已经在进行中')
     return
   }
 
@@ -79,19 +84,21 @@ async function startStream() {
     if (response.ok) {
       isStreaming.value = true
       updateVideoSource()
-      alert('推流已开始')
+      // alert('推流已开始')
+      toast("推流已开始")
+
     } else {
       throw new Error('服务器响应错误')
     }
   } catch (error) {
     console.error('Error:', error)
-    alert('开始推流失败: ' + error.message)
+    toast('开始推流失败: ' + error.message)
   }
 }
 
 async function stopStream() {
   if (!isStreaming.value) {
-    alert('推流已经停止')
+    toast('推流已经停止')
     return
   }
 
@@ -103,12 +110,13 @@ async function stopStream() {
     
     if (response.ok) {
       isStreaming.value = false
+      toast("推流已停止")
     } else {
       throw new Error('服务器响应错误')
     }
   } catch (error) {
     console.error('Error:', error)
-    alert('停止推流失败: ' + error.message)
+    toast('停止推流失败: ' + error.message)
   }
 }
 
@@ -138,6 +146,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 <style scoped>
 .stream-container {
+  /* border:1px solid; */
   max-width: 640px;
   margin: 20px auto;
   padding: 20px;
@@ -156,14 +165,14 @@ onBeforeRouteLeave((to, from, next) => {
   gap: 16px;
   margin-bottom: 20px;
   padding: 16px;
-  background: #f5f6fa;
-  border-radius: 8px;
+  /* background: rgb(249, 249, 249); */
+  border-radius: 4px;
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 5px 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -195,12 +204,14 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 .status-indicator {
+  /* border: 1px solid; */
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   font-size: 14px;
+  cursor: default;
 }
 
 .status-dot {
@@ -210,7 +221,7 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 .status-streaming {
-  background-color: #e8f5e9;
+  /* background-color: #e8f5e9; */
   color: #2e7d32;
 }
 
@@ -219,7 +230,7 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 .status-stopped {
-  background-color: #ffebee;
+  /* background-color: #ffebee; */
   color: #c62828;
 }
 
@@ -239,4 +250,5 @@ onBeforeRouteLeave((to, from, next) => {
   width: 100%;
   height: auto;
 }
+
 </style>

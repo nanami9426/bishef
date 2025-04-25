@@ -1,11 +1,11 @@
 <script setup>
-import { useRouter, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import HeadBanner from './components/HeadBanner.vue';
 </script>
 
 <template>
     <HeadBanner></HeadBanner>
-<router-view />
+    <router-view />
 </template>
 
 <style scoped>
