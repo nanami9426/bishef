@@ -1,10 +1,11 @@
 <script setup>
+import TrainConsole from '@/components/TrainConsole.vue';
+
 </script>
 
 <template>
-    <div>
-        工作区
-    </div>
+    <div style="height: 27px;"></div>
+    <TrainConsole></TrainConsole>
 </template>
 
 <style scoped>
