@@ -37,7 +37,7 @@ import { ref, onMounted, computed } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
-const toast = useToast();
+const toast = useToast()
 
 
 const isStreaming = ref(false)
@@ -154,6 +154,7 @@ onBeforeRouteLeave((to, from, next) => {
 }
 
 .title {
+  font-size: 20px;
   color: #2c3e50;
   text-align: center;
   margin-bottom: 24px;

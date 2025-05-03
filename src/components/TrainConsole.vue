@@ -1,14 +1,13 @@
 <template>
-<div class="title">本地数据训练</div>
 <div class="train-terminal">
     <div class="controls">
     <label>
-        批量大小：
-        <input type="number" v-model.number="params.batch_size" min="1" />
-    </label>
-    <label>
         网络名称：
         <input type="text" v-model="params.net_name" />
+    </label>
+    <label>
+        批量大小：
+        <input type="number" v-model.number="params.batch_size" min="1" />
     </label>
     <label>
         训练轮次：
@@ -18,8 +17,12 @@
         是否添加测试：
         <input type="checkbox" v-model="params.evaluate_test" />
     </label>
+    <div style="width: 27px;"></div>
     <button :disabled="running" @click="startTrain">
         {{ running ? '训练中...' : '开始训练' }}
+    </button>
+    <button :disabled="running" @click="clearConsole">
+        {{ "清空" }}
     </button>
     </div>
 
@@ -43,64 +46,60 @@ const logs = ref([])
 const running = ref(false)
 const cmdWindow = ref(null)
 
-async function startTrain() {
-if (running.value) return
-logs.value = []
-running.value = true
-
-try {
-    const res = await fetch('http://localhost:8000/func/train', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(params)
-    })
-    if (!res.ok || !res.body) {
-    logs.value.push('Error: 无法连接到训练接口')
-    return
-    }
-
-    const reader = res.body
-    .pipeThrough(new TextDecoderStream())
-    .getReader()
-
-    let { value, done } = await reader.read()
-    let buffer = ''
-    while (!done) {
-    buffer += value
-    let lines = buffer.split(/\r?\n/)
-    buffer = lines.pop()  // 最后一项可能不完整，保留到下轮
-    for (const line of lines) {
-        logs.value.push(line)
-        await nextTick()
-        // 自动滚动到底部
-        const el = cmdWindow.value
-        if (el) {
-        el.scrollTop = el.scrollHeight
-        }
-    }
-    ({ value, done } = await reader.read())
-    }
-    // 处理最后残余
-    if (buffer.trim()) {
-    logs.value.push(buffer.trim())
-    }
-} catch (err) {
-    logs.value.push(`Exception: ${err.message}`)
-} finally {
-    running.value = false
+const clearConsole = ()=>{
+  logs.value = []
 }
+
+async function startTrain() {
+  if (running.value) return
+  // logs.value = []
+  running.value = true
+
+  try {
+        const res = await fetch('http://localhost:8000/func/train', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+        })
+        if (!res.ok || !res.body) {
+        logs.value.push('Error: 无法连接到训练接口')
+        return
+        }
+
+        const reader = res.body
+        .pipeThrough(new TextDecoderStream())
+        .getReader()
+
+        let { value, done } = await reader.read()
+        let buffer = ''
+        while (!done) {
+        buffer += value
+        let lines = buffer.split(/\r?\n/)
+        buffer = lines.pop()  // 最后一项可能不完整，保留到下轮
+        for (const line of lines) {
+            logs.value.push(line)
+            await nextTick()
+            // 自动滚动到底部
+            const el = cmdWindow.value
+            if (el) {
+            el.scrollTop = el.scrollHeight
+            }
+        }
+        ({ value, done } = await reader.read())
+        }
+        // 处理最后残余
+        if (buffer.trim()) {
+        logs.value.push(buffer.trim())
+        }
+    } catch (err) {
+        logs.value.push(`Exception: ${err.message}`)
+    } finally {
+        running.value = false
+  }
 }
 </script>
 
 <style scoped>
-.title {
-    color: #2c3e50;
-    font-family: 'SimSun', '宋体', serif;
-    font-size: 22px;
-    font-weight: bold;
-    max-width: 1220px;
-    margin: 0 auto;
-}
 .train-terminal {
   display: flex;
   flex-direction: column;
@@ -122,7 +121,7 @@ try {
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #333;
+  color: #222;
 }
 
 input {

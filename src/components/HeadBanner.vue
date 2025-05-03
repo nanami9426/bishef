@@ -47,7 +47,7 @@
   
   .logo {
     font-family: 'SimSun', '宋体', serif;
-    font-size: 1.25rem;
+    font-size: 1.30rem;
     font-weight: bold;
     cursor: default;
     color: #080f18;
