@@ -8,9 +8,9 @@
     <label>
       网络名称：
       <select v-model="params.net_name">
-        <option value="front">{{ `pose_net` }}</option>
-        <option value="left">{{ `pose_text_cnn` }}</option>
-        <option value="right">{{ `pose_transformer` }}</option>
+        <option value="pose_net">{{ `pose_net` }}</option>
+        <option value="pose_text_cnn">{{ `pose_text_cnn` }}</option>
+        <option value="pose_transformer">{{ `pose_transformer` }}</option>
       </select>
     </label>
     <label>
@@ -61,7 +61,6 @@ async function startTrain() {
   if (running.value) return
   // logs.value = []
   running.value = true
-
   try {
         const res = await fetch('http://localhost:8000/func/train', {
         method: 'POST',
