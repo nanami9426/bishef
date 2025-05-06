@@ -1,9 +1,17 @@
 <template>
 <div class="train-terminal">
     <div class="controls">
-    <label>
+    <!-- <label>
         网络名称：
         <input type="text" v-model="params.net_name" />
+    </label> -->
+    <label>
+      网络名称：
+      <select v-model="params.net_name">
+        <option value="front">{{ `pose_net` }}</option>
+        <option value="left">{{ `pose_text_cnn` }}</option>
+        <option value="right">{{ `pose_transformer` }}</option>
+      </select>
     </label>
     <label>
         批量大小：
@@ -37,11 +45,10 @@ import { ref, reactive, nextTick } from 'vue'
 
 const params = reactive({
 batch_size: 32,
-net_name: 'pnet',
+net_name: 'pose_net',
 num_epochs: 16,
 evaluate_test: false
 })
-
 const logs = ref([])
 const running = ref(false)
 const cmdWindow = ref(null)
@@ -131,6 +138,18 @@ input {
   font-size: 14px;
   transition: border-color 0.15s;
   font-family: 'SimSun', '宋体', serif;
+}
+select {
+  border: 1px solid rgba(49, 112, 175, 0.15);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  transition: border-color 0.15s;
+  font-family: 'SimSun', '宋体', serif;
+}
+
+select:focus {
+  outline: none;
 }
 
 input:focus {
