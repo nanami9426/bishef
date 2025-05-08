@@ -1,5 +1,7 @@
 <script setup>
 import TrainConsole from '@/components/TrainConsole.vue';
+import UploadPic from '@/components/UploadPic.vue';
+import UploadVideo from '@/components/UploadVideo.vue';
 
 </script>
 
@@ -18,8 +20,14 @@ import TrainConsole from '@/components/TrainConsole.vue';
     <div style="height: 27px;"></div>
     <div class="title">本地数据训练</div>
     <TrainConsole></TrainConsole>
+
     <div style="height: 27px;"></div>
     <div class="title">通过视频识别代偿行为</div>
+    <UploadVideo></UploadVideo>
+
+    <div style="height: 27px;"></div>
+    <div class="title">通过图像识别代偿行为</div>
+    <UploadPic></UploadPic>
 </template>
 
 <style scoped>
