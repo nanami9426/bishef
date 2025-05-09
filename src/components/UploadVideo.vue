@@ -18,7 +18,7 @@
   
       <div v-if="response">
         <div style="font-size: 16px; margin-bottom: 17px;">识别结果：</div>
-        <pre>{{ response }}</pre>
+        <div class="response"> {{ response }}</div>
       </div>
     </div>
   </template>
@@ -124,6 +124,17 @@ button {
     max-width: 720px;
     border-radius: 6px;
     border: 1px solid #ccc;
+  }
+  button:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+  .response {
+    max-width: 1220px;
   }
   </style>
   

@@ -12,24 +12,31 @@
 
           <img :src="previewUrl" alt="预览图" />
         </div>
-        <button type="submit">上传</button>
+        <button type="submit"  :disabled="running">{{ running ? '处理中...' : '上传' }}</button>
       </form>
-  
+      <div v-show="response">
+        <button @click="clear" >清空结果</button>
+      </div>
+      
       <div v-if="response">
         <div style="font-size: 16px; margin-bottom: 17px;">识别结果：</div>
-        <pre>{{ response }}</pre>
+        <!-- <div class="response"> {{ response }}</div> -->
+         <div v-html="mark_res"  class="response"></div>
       </div>
     </div>
   </template>
   
   <script setup>
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   import axios from 'axios'
-  
+  import { marked } from 'marked'
   const file = ref(null)
   const response = ref(null)
   const previewUrl = ref(null)
-  
+  const running = ref(false)
+
+  const mark_res = computed(()=>marked(response.value))
+
   const handleFileChange = (event) => {
     const selected = event.target.files[0]
     if (selected) {
@@ -37,13 +44,17 @@
       previewUrl.value = URL.createObjectURL(selected)
     }
   }
-  
+  const clear = ()=>{
+    response.value = null
+  }
   const submitForm = async () => {
+    if (running.value) return
     if (!file.value) {
-      alert('请上传图片并填写文字')
+      alert('请上传图片')
       return
     }
-  
+    running.value = true
+    
     const formData = new FormData()
     formData.append('file', file.value)
     formData.append('file_type', 'pic')
@@ -57,6 +68,8 @@
       response.value = res.data
     } catch (error) {
       response.value = error.response?.data || error.message
+    } finally {
+      running.value = false
     }
   }
   </script>
@@ -97,6 +110,14 @@ button {
     color: white;
     margin-top: 17px;
 }
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
   .preview {
     margin: 20px 0;
   }
@@ -121,6 +142,9 @@ button {
   }
   input[type="file"] {
     display: none;
+  }
+  .response {
+    max-width: 1220px;
   }
   </style>
   
