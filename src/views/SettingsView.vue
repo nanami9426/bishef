@@ -1,5 +1,6 @@
 <script setup>
 import CameraSelector from '@/components/CameraSelector.vue';
+import StateDictSelector from '@/components/StateDictSelector.vue';
 
 
 </script>
@@ -8,6 +9,9 @@ import CameraSelector from '@/components/CameraSelector.vue';
     <div style="height: 27px;"></div>
     <div class="title">选择推流摄像头</div>
     <CameraSelector></CameraSelector>
+    <div style="height: 27px;"></div>
+    <div class="title">选择模型参数</div>
+    <StateDictSelector></StateDictSelector>
 </template>
 
 <style scoped>
